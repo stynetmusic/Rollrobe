@@ -1,0 +1,19 @@
+name: Windows exe
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt pyinstaller
+      - run: pyinstaller --noconfirm --windowed --name Rollrobe --add-data "ПГИ-06-12-2024.xlsx;." --add-data "ПГИ-16.09.2024.xlsx;." --add-data "ПГИ-16.09.2024-42.xlsx;." main.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Rollrobe-windows
+          path: dist/Rollrobe
